@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         getRequestQueue().add(stringRequest);
     }
 
+    //ESTA FUNCION CARGA LA IMAGEN DESDE INTERNET
+    
     private void loadImage(final ImageView imageView, final String imageUrl){
         Picasso.with(getBaseContext()).load(imageUrl).into(imageView);
 
