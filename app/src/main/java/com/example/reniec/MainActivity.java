@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,9 +81,19 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("*****JARRAY*****"+items.length());
                     for(int i=0;i<items.length();i++){
                         JSONObject json_data = items.getJSONObject(i);
+
+                        //Extraer Imagenes
+                        JSONArray imageslist = json_data.getJSONArray("images");
+                        JSONObject img_data = imageslist.getJSONObject(0);
+
+
                         TextView tx= new TextView(getBaseContext());
+                        ImageView img = new ImageView(getBaseContext());
+                        loadImage(img, img_data.getString("url"));
+
+                        linearLayout.addView(img);
                         tx.setText(json_data.getString("name"));
-                        linearLayout.addView(tx);
+                      linearLayout.addView(tx);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -115,13 +128,18 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("Accept", "application/json");
                 params.put("Content-Type", "application/json");
-                params.put("Authorization", "Bearer BQB3Q6aF0j90jI_5x1gmbBD6pkqh3mM8KYF-IwgmzZtZf49hG4D_KsShRLp5Q7mEmvcirQAD6jwi1qvMNDcW6JN5_Or_amtZMeKx0L2XdzQzpgZyJfdgn34uHn0E-4EHXkr_mlUDfK2SLWgVdXQsEyLBzOHCZqTq");
+                params.put("Authorization", "Bearer BQCRdXsP4BRu3NpsG6zgWoL-Xrztpb7qvTbgIoF5VFUhOgpR_PTY1QMKZBRzTa7UNZXqmH7u4DfO6daOLBFeLPaVnOd5pUJwD9Ueby15IMaJbg4zRt-NBoqZtK0tgi5GApDSb_GARZHTJkufiHU2llA0WtcjgQX6");
 
                 return params;
             }
         };
 
         getRequestQueue().add(stringRequest);
+    }
+
+    private void loadImage(final ImageView imageView, final String imageUrl){
+        Picasso.with(getBaseContext()).load(imageUrl).into(imageView);
+
     }
 
     public RequestQueue getRequestQueue() {
